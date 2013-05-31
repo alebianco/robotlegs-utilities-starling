@@ -1,11 +1,23 @@
-# Build and Release Folders
-bin/
-bin-debug/
-bin-release/
+/.settings/*
+/html-template/*
+/bin-debug/*
+/bin-release/*
+/bin/*
+/docs/*
+/reports/*
 
-# Other files and folders
-.settings/
+.actionScriptProperties
+.flexProperties
+.flexLibProperties
+.FlexUnitSettings
+.project
+.fxpProperties
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+user.properties
+
+Icon
+Thumbs.db
+.DS_Store
+
+.idea
+*.iml
