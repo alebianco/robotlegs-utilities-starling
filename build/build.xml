@@ -31,7 +31,7 @@
         <java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
             <arg value="-output=${bin.dir}/${project.name.versioned}.swc"/>
             <arg value="-include-sources+=${main.src.dir}"/>
-            <arg value="-library-path+=${lib.dir}"/>
+            <arg value="-external-library-path+=${lib.dir}"/>
             <arg value="-incremental=true"/>
             <arg value="-static-link-runtime-shared-libraries=true"/>
             <arg value="-verbose-stacktraces=true"/>
@@ -56,7 +56,8 @@
             <arg value="-debug=true"/>
         </java>
 
-        <flexunit swf="bin/TestRunner.swf" toDir="${report.dir}" haltonfailure="true" verbose="true" localTrusted="true"/>
+        <flexunit swf="bin/TestRunner.swf" toDir="${report.dir}" haltonfailure="true" verbose="true"
+                  localTrusted="true"/>
         <junitreport todir="reports">
             <fileset dir="reports">
                 <include name="TEST-*.xml"/>
