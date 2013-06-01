@@ -6,18 +6,18 @@
 //------------------------------------------------------------------------------
 
 package robotlegs.starling.extensions.viewManager {
-import starling.display.DisplayObjectContainer;
-
 import org.swiftsuspenders.Injector;
 
+import robotlegs.bender.framework.api.IContext;
+import robotlegs.bender.framework.api.IExtension;
+import robotlegs.bender.framework.api.ILogger;
 import robotlegs.starling.extensions.contextView.ContextView;
 import robotlegs.starling.extensions.viewManager.api.IViewManager;
 import robotlegs.starling.extensions.viewManager.impl.ContainerBinding;
 import robotlegs.starling.extensions.viewManager.impl.ContainerRegistry;
 import robotlegs.starling.extensions.viewManager.impl.StageCrawler;
-import robotlegs.bender.framework.api.IContext;
-import robotlegs.bender.framework.api.IExtension;
-import robotlegs.bender.framework.api.ILogger;
+
+import starling.display.DisplayObjectContainer;
 
 /**
  * View Handlers (like the MediatorMap) handle views as they land on stage.

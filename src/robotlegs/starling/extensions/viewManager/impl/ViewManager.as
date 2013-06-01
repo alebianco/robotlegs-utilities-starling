@@ -6,11 +6,11 @@
 //------------------------------------------------------------------------------
 
 package robotlegs.starling.extensions.viewManager.impl {
-import starling.display.DisplayObjectContainer;
-import starling.events.EventDispatcher;
-
 import robotlegs.starling.extensions.viewManager.api.IViewHandler;
 import robotlegs.starling.extensions.viewManager.api.IViewManager;
+
+import starling.display.DisplayObjectContainer;
+import starling.events.EventDispatcher;
 
 [Event(name="containerAdd", type="robotlegs.bender.extensions.viewManager.impl.ViewManagerEvent")]
 [Event(name="containerRemove", type="robotlegs.bender.extensions.viewManager.impl.ViewManagerEvent")]

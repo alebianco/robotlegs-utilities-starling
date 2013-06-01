@@ -8,12 +8,11 @@
 package robotlegs.starling.extensions.viewManager {
 import org.swiftsuspenders.Injector;
 
-import robotlegs.bender.extensions.utils.ensureContextUninitialized;
+import robotlegs.bender.framework.api.IContext;
+import robotlegs.bender.framework.api.IExtension;
 import robotlegs.starling.extensions.viewManager.api.IViewManager;
 import robotlegs.starling.extensions.viewManager.impl.ContainerRegistry;
 import robotlegs.starling.extensions.viewManager.impl.ViewManager;
-import robotlegs.bender.framework.api.IContext;
-import robotlegs.bender.framework.api.IExtension;
 
 /**
  * This extension install a View Manager into the context
@@ -43,7 +42,8 @@ public class ViewManagerExtension implements IExtension {
      * @inheritDoc
      */
     public function extend(context:IContext):void {
-        ensureContextUninitialized(context, this);
+        context.whenInitializing(whenInitializing);
+        context.whenDestroying(whenDestroying);
 
         _injector = context.injector;
 
@@ -53,9 +53,6 @@ public class ViewManagerExtension implements IExtension {
 
         // But you get your own View Manager
         _injector.map(IViewManager).toSingleton(ViewManager);
-
-        context.whenInitializing(whenInitializing);
-        context.whenDestroying(whenDestroying);
     }
 
     /*============================================================================*/

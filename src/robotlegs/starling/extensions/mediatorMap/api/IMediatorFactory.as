@@ -7,8 +7,8 @@
 
 package robotlegs.starling.extensions.mediatorMap.api {
 
-[Event(name="mediatorCreate", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
-[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
+[Event(name="mediatorCreate", type="robotlegs.starling.extensions.mediatorMap.api.MediatorFactoryEvent")]
+[Event(name="mediatorRemove", type="robotlegs.starling.extensions.mediatorMap.api.MediatorFactoryEvent")]
 /**
  * @private
  */

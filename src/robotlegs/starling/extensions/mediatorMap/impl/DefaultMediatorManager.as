@@ -25,9 +25,9 @@ public class DefaultMediatorManager {
 
     private static var UIComponentClass:Class;
 
-    private static const flexAvailable:Boolean = checkFlex();
+    private static const feathersAvailable:Boolean = checkFeathers();
 
-    private static const CREATION_COMPLETE:String = "creationComplete";
+    private static const INITIALIZE:String = "initialize";
 
     /*============================================================================*/
     /* Private Properties                                                         */
@@ -52,9 +52,9 @@ public class DefaultMediatorManager {
     /* Private Static Functions                                                   */
     /*============================================================================*/
 
-    private static function checkFlex():Boolean {
+    private static function checkFeathers():Boolean {
         try {
-            UIComponentClass = getDefinitionByName('mx.core::UIComponent') as Class;
+            UIComponentClass = getDefinitionByName('feathers.core::FeathersControl') as Class;
         }
         catch (error:Error) {
             // Do nothing
@@ -82,9 +82,9 @@ public class DefaultMediatorManager {
         }
 
         // Is this a UIComponent that needs to be initialized?
-        if (flexAvailable && (displayObject is UIComponentClass) && !displayObject['initialized']) {
-            displayObject.addEventListener(CREATION_COMPLETE, function (e:Event):void {
-                displayObject.removeEventListener(CREATION_COMPLETE, arguments.callee);
+        if (feathersAvailable && (displayObject is UIComponentClass) && !displayObject['isInitialized']) {
+            displayObject.addEventListener(INITIALIZE, function (e:Event):void {
+                displayObject.removeEventListener(INITIALIZE, arguments.callee);
                 // ensure that we haven't been removed in the meantime
                 if (_factory.getMediator(displayObject, event.mapping))
                     initializeMediator(displayObject, mediator);

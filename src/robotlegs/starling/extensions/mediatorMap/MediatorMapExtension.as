@@ -8,7 +8,6 @@
 package robotlegs.starling.extensions.mediatorMap {
 import org.swiftsuspenders.Injector;
 
-import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
 import robotlegs.starling.extensions.mediatorMap.api.IMediatorFactory;
@@ -44,14 +43,13 @@ public class MediatorMapExtension implements IExtension {
      * @inheritDoc
      */
     public function extend(context:IContext):void {
-        ensureContextUninitialized(context, this);
-        _injector = context.injector;
-        _injector.map(IMediatorFactory).toSingleton(MediatorFactory);
-        _injector.map(IMediatorMap).toSingleton(MediatorMap);
         context.beforeInitializing(beforeInitializing)
                 .beforeDestroying(beforeDestroying)
                 .whenDestroying(whenDestroying)
                 .afterDestroying(afterDestroying);
+        _injector = context.injector;
+        _injector.map(IMediatorFactory).toSingleton(MediatorFactory);
+        _injector.map(IMediatorMap).toSingleton(MediatorMap);
     }
 
     /*============================================================================*/

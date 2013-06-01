@@ -6,11 +6,11 @@
 //------------------------------------------------------------------------------
 
 package robotlegs.starling.extensions.viewManager.impl {
+import flash.utils.Dictionary;
+
 import starling.display.DisplayObject;
 import starling.display.DisplayObjectContainer;
 import starling.events.EventDispatcher;
-
-import flash.utils.Dictionary;
 
 [Event(name="containerAdd", type="robotlegs.bender.extensions.viewManager.impl.ContainerRegistryEvent")]
 [Event(name="containerRemove", type="robotlegs.bender.extensions.viewManager.impl.ContainerRegistryEvent")]

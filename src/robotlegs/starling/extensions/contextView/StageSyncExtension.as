@@ -6,13 +6,12 @@
  *
  * Copyright © 2013 Alessandro Bianco
  */
-package robotlegs.starling.extensions.stageSync {
+package robotlegs.starling.extensions.contextView {
 
-import robotlegs.bender.extensions.utils.instanceOfType;
+import robotlegs.bender.extensions.matching.instanceOfType;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
 import robotlegs.bender.framework.api.ILogger;
-import robotlegs.starling.extensions.contextView.ContextView;
 
 import starling.core.Starling;
 import starling.events.Event;
@@ -37,23 +36,39 @@ public class StageSyncExtension implements IExtension {
             return;
         }
         _contextView = contextView.view;
-        if (_contextView.stage.numChildren > 0) {
+        if (_contextView.root) {
             initializeContext();
         } else {
-            _logger.debug("Context view is not yet on stage. Waiting...");
-            _contextView.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
+            _logger.debug("Context root has not been created yet. Waiting...");
+            _contextView.addEventListener(Event.ROOT_CREATED, onRootCreated);
         }
     }
 
-    private function onContextCreated(event:Event):void {
-        _logger.debug("Starling context view added on stage.");
+    private function onRootCreated(event:Event):void {
+        _contextView.removeEventListener(Event.ROOT_CREATED, onRootCreated);
+        if (_contextView.root.stage) {
+            initializeContext();
+        } else {
+            _logger.debug("Context view is not yet on stage. Waiting...");
+            _contextView.root.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+        }
+    }
+
+    private function onAddedToStage(event:Event):void {
+        _contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
         initializeContext();
     }
 
     private function initializeContext():void {
-        _logger.debug("Context view is now on stage. Initializing context...");
+        _logger.debug("Context view is now ready and on stage. Initializing context...");
         _context.initialize();
-        // TODO detect dispose
+        _contextView.root.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+    }
+
+    private function onRemovedFromStage(event:Event):void {
+        _logger.debug("Context view has left the stage. Destroying context...");
+        _contextView.root.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+        _context.destroy();
     }
 }
 }

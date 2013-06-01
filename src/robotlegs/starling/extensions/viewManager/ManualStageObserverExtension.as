@@ -8,12 +8,11 @@
 package robotlegs.starling.extensions.viewManager {
 import org.swiftsuspenders.Injector;
 
-import robotlegs.bender.extensions.utils.ensureContextUninitialized;
-import robotlegs.starling.extensions.viewManager.impl.ContainerRegistry;
-import robotlegs.starling.extensions.viewManager.impl.ManualStageObserver;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
 import robotlegs.bender.framework.api.ILogger;
+import robotlegs.starling.extensions.viewManager.impl.ContainerRegistry;
+import robotlegs.starling.extensions.viewManager.impl.ManualStageObserver;
 
 /**
  * This extension install a manual Stage Observer
@@ -45,12 +44,11 @@ public class ManualStageObserverExtension implements IExtension {
      * @inheritDoc
      */
     public function extend(context:IContext):void {
-        ensureContextUninitialized(context, this);
+        context.whenInitializing(whenInitializing);
+        context.whenDestroying(whenDestroying);
         _installCount++;
         _injector = context.injector;
         _logger = context.getLogger(this);
-        context.whenInitializing(whenInitializing);
-        context.whenDestroying(whenDestroying);
     }
 
     /*============================================================================*/

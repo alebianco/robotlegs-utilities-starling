@@ -7,11 +7,11 @@
 
 package robotlegs.starling.extensions.viewManager.impl {
 
+import flash.utils.getQualifiedClassName;
+
 import starling.display.DisplayObject;
 import starling.display.DisplayObjectContainer;
 import starling.events.Event;
-
-import flash.utils.getQualifiedClassName;
 
 /**
  * @private

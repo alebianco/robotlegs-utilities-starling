@@ -2,8 +2,7 @@ package robotlegs.starling.extensions.contextView {
 
 import org.swiftsuspenders.Injector;
 
-import robotlegs.bender.extensions.utils.ensureContextUninitialized;
-import robotlegs.bender.extensions.utils.instanceOfType;
+import robotlegs.bender.extensions.matching.instanceOfType;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
 import robotlegs.bender.framework.api.ILogger;
@@ -14,11 +13,10 @@ public class ContextViewExtension implements IExtension {
     private var _logger:ILogger;
 
     public function extend(context:IContext):void {
-        ensureContextUninitialized(context, this);
         _injector = context.injector;
         _logger = context.getLogger(this);
-        context.addConfigHandler(instanceOfType(ContextView), handleContextView);
         context.beforeInitializing(beforeInitializing);
+        context.addConfigHandler(instanceOfType(ContextView), handleContextView);
     }
 
     private function handleContextView(contextView:ContextView):void {
