@@ -6,10 +6,9 @@
 //------------------------------------------------------------------------------
 
 package robotlegs.starling.extensions.viewManager {
-import org.swiftsuspenders.Injector;
-
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
+import robotlegs.bender.framework.api.IInjector;
 import robotlegs.starling.extensions.viewManager.api.IViewManager;
 import robotlegs.starling.extensions.viewManager.impl.ContainerRegistry;
 import robotlegs.starling.extensions.viewManager.impl.ViewManager;
@@ -30,7 +29,7 @@ public class ViewManagerExtension implements IExtension {
     /* Private Properties                                                         */
     /*============================================================================*/
 
-    private var _injector:Injector;
+    private var _injector:IInjector;
 
     private var _viewManager:IViewManager;
 

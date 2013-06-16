@@ -8,9 +8,8 @@
 package robotlegs.starling.extensions.mediatorMap.impl {
 import flash.utils.Dictionary;
 
-import org.swiftsuspenders.Injector;
-
 import robotlegs.bender.extensions.matching.ITypeFilter;
+import robotlegs.bender.framework.api.IInjector;
 import robotlegs.bender.framework.impl.applyHooks;
 import robotlegs.bender.framework.impl.guardsApprove;
 import robotlegs.starling.extensions.mediatorMap.api.IMediatorFactory;
@@ -32,7 +31,7 @@ public class MediatorFactory extends EventDispatcher implements IMediatorFactory
 
     private const _mediators:Dictionary = new Dictionary();
 
-    private var _injector:Injector;
+    private var _injector:IInjector;
 
     /*============================================================================*/
     /* Constructor                                                                */
@@ -41,7 +40,7 @@ public class MediatorFactory extends EventDispatcher implements IMediatorFactory
     /**
      * @private
      */
-    public function MediatorFactory(injector:Injector) {
+    public function MediatorFactory(injector:IInjector) {
         _injector = injector;
     }
 

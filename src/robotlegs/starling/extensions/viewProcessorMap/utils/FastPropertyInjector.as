@@ -6,7 +6,7 @@
 //------------------------------------------------------------------------------
 
 package robotlegs.starling.extensions.viewProcessorMap.utils {
-import org.swiftsuspenders.Injector;
+import robotlegs.bender.framework.api.IInjector;
 
 /**
  * Avoids view reflection by using a provided map
@@ -47,7 +47,7 @@ public class FastPropertyInjector {
     /**
      * @private
      */
-    public function process(view:Object, type:Class, injector:Injector):void {
+    public function process(view:Object, type:Class, injector:IInjector):void {
         for (var propName:String in _propertyTypesByName) {
             view[propName] = injector.getInstance(_propertyTypesByName[propName]);
         }
@@ -56,7 +56,7 @@ public class FastPropertyInjector {
     /**
      * @private
      */
-    public function unprocess(view:Object, type:Class, injector:Injector):void {
+    public function unprocess(view:Object, type:Class, injector:IInjector):void {
     }
 }
 }

@@ -6,10 +6,9 @@
 //------------------------------------------------------------------------------
 
 package robotlegs.starling.extensions.viewProcessorMap {
-import org.swiftsuspenders.Injector;
-
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
+import robotlegs.bender.framework.api.IInjector;
 import robotlegs.starling.extensions.viewManager.api.IViewHandler;
 import robotlegs.starling.extensions.viewManager.api.IViewManager;
 import robotlegs.starling.extensions.viewProcessorMap.api.IViewProcessorMap;
@@ -26,7 +25,7 @@ public class ViewProcessorMapExtension implements IExtension {
     /* Private Properties                                                         */
     /*============================================================================*/
 
-    private var _injector:Injector;
+    private var _injector:IInjector;
 
     private var _viewProcessorMap:IViewProcessorMap;
 
@@ -46,7 +45,7 @@ public class ViewProcessorMapExtension implements IExtension {
         context.beforeDestroying(beforeDestroying);
         context.whenDestroying(whenDestroying);
         _injector = context.injector;
-        _injector.map(IViewProcessorFactory).toValue(new ViewProcessorFactory(_injector.createChildInjector()));
+        _injector.map(IViewProcessorFactory).toValue(new ViewProcessorFactory(_injector.createChild()));
         _injector.map(IViewProcessorMap).toSingleton(ViewProcessorMap);
     }
 

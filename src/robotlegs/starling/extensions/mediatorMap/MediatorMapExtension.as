@@ -6,10 +6,9 @@
 //------------------------------------------------------------------------------
 
 package robotlegs.starling.extensions.mediatorMap {
-import org.swiftsuspenders.Injector;
-
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
+import robotlegs.bender.framework.api.IInjector;
 import robotlegs.starling.extensions.mediatorMap.api.IMediatorFactory;
 import robotlegs.starling.extensions.mediatorMap.api.IMediatorMap;
 import robotlegs.starling.extensions.mediatorMap.impl.DefaultMediatorManager;
@@ -27,7 +26,7 @@ public class MediatorMapExtension implements IExtension {
     /* Private Properties                                                         */
     /*============================================================================*/
 
-    private var _injector:Injector;
+    private var _injector:IInjector;
 
     private var _mediatorMap:IMediatorMap;
 

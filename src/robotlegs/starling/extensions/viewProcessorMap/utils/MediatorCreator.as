@@ -8,7 +8,7 @@
 package robotlegs.starling.extensions.viewProcessorMap.utils {
 import flash.utils.Dictionary;
 
-import org.swiftsuspenders.Injector;
+import robotlegs.bender.framework.api.IInjector;
 
 /**
  * Simple Mediator creation processor
@@ -42,7 +42,7 @@ public class MediatorCreator {
     /**
      * @private
      */
-    public function process(view:Object, type:Class, injector:Injector):void {
+    public function process(view:Object, type:Class, injector:IInjector):void {
         if (_createdMediatorsByView[view]) {
             return;
         }
@@ -54,7 +54,7 @@ public class MediatorCreator {
     /**
      * @private
      */
-    public function unprocess(view:Object, type:Class, injector:Injector):void {
+    public function unprocess(view:Object, type:Class, injector:IInjector):void {
         if (_createdMediatorsByView[view]) {
             destroyMediator(_createdMediatorsByView[view]);
             delete _createdMediatorsByView[view];

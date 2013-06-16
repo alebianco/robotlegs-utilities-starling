@@ -8,10 +8,10 @@
 package robotlegs.starling.extensions.viewProcessorMap.impl {
 import flash.utils.Dictionary;
 
-import org.swiftsuspenders.Injector;
 import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
 
 import robotlegs.bender.extensions.matching.ITypeFilter;
+import robotlegs.bender.framework.api.IInjector;
 import robotlegs.bender.framework.impl.applyHooks;
 import robotlegs.bender.framework.impl.guardsApprove;
 import robotlegs.starling.extensions.viewProcessorMap.api.ViewProcessorMapError;
@@ -29,7 +29,7 @@ public class ViewProcessorFactory implements IViewProcessorFactory {
     /* Private Properties                                                         */
     /*============================================================================*/
 
-    private var _injector:Injector;
+    private var _injector:IInjector;
 
     private var _listenersByView:Dictionary = new Dictionary(true);
 
@@ -40,7 +40,7 @@ public class ViewProcessorFactory implements IViewProcessorFactory {
     /**
      * @private
      */
-    public function ViewProcessorFactory(injector:Injector) {
+    public function ViewProcessorFactory(injector:IInjector) {
         _injector = injector;
     }
 

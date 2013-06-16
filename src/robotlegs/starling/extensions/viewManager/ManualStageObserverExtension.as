@@ -6,10 +6,9 @@
 //------------------------------------------------------------------------------
 
 package robotlegs.starling.extensions.viewManager {
-import org.swiftsuspenders.Injector;
-
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
+import robotlegs.bender.framework.api.IInjector;
 import robotlegs.bender.framework.api.ILogger;
 import robotlegs.starling.extensions.viewManager.impl.ContainerRegistry;
 import robotlegs.starling.extensions.viewManager.impl.ManualStageObserver;
@@ -32,7 +31,7 @@ public class ManualStageObserverExtension implements IExtension {
     /* Private Properties                                                         */
     /*============================================================================*/
 
-    private var _injector:Injector;
+    private var _injector:IInjector;
 
     private var _logger:ILogger;
 

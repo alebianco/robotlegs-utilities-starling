@@ -1,15 +1,14 @@
 package robotlegs.starling.extensions.contextView {
 
-import org.swiftsuspenders.Injector;
-
 import robotlegs.bender.extensions.matching.instanceOfType;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
+import robotlegs.bender.framework.api.IInjector;
 import robotlegs.bender.framework.api.ILogger;
 
 public class ContextViewExtension implements IExtension {
 
-    private var _injector:Injector;
+    private var _injector:IInjector;
     private var _logger:ILogger;
 
     public function extend(context:IContext):void {

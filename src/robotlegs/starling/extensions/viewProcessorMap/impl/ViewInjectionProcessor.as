@@ -8,7 +8,7 @@
 package robotlegs.starling.extensions.viewProcessorMap.impl {
 import flash.utils.Dictionary;
 
-import org.swiftsuspenders.Injector;
+import robotlegs.bender.framework.api.IInjector;
 
 /**
  * Default View Injection Processor implementation
@@ -29,14 +29,14 @@ public class ViewInjectionProcessor {
     /**
      * @private
      */
-    public function process(view:Object, type:Class, injector:Injector):void {
+    public function process(view:Object, type:Class, injector:IInjector):void {
         _injectedObjects[view] || injectAndRemember(view, injector);
     }
 
     /**
      * @private
      */
-    public function unprocess(view:Object, type:Class, injector:Injector):void {
+    public function unprocess(view:Object, type:Class, injector:IInjector):void {
         // assumption is that teardown is not wanted.
         // if you *do* want teardown, copy this class
     }
@@ -45,7 +45,7 @@ public class ViewInjectionProcessor {
     /* Private Functions                                                          */
     /*============================================================================*/
 
-    private function injectAndRemember(view:Object, injector:Injector):void {
+    private function injectAndRemember(view:Object, injector:IInjector):void {
         injector.injectInto(view);
         _injectedObjects[view] = view;
     }
