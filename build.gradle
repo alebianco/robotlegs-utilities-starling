@@ -27,7 +27,13 @@ buildscript {
         }
     }
 
-    project.properties.ext['product.version'] += '-SNAPSHOT'
+    allprojects {
+        gradle.taskGraph.whenReady { taskGraph ->
+            if (!taskGraph.hasTask(release)) {
+                this.properties.ext['product.version'] += '-SNAPSHOT'
+            }
+        }
+    }
 }
 
 apply plugin: org.gradlefx.plugins.GradleFxPlugin
@@ -84,7 +90,7 @@ task release (dependsOn: ['clean', 'build'], type: Zip) {
         include '**/*'
         exclude 'tempdita'
         into 'doc'
-}
+    }
     from 'CHANGELOG.md'
     from 'CONTRIBUTING.md'
     from 'LICENSE.md'
