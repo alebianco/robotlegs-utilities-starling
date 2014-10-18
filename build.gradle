@@ -58,8 +58,6 @@ dependencies {
                "libs/flexunit-cilistener-4.2.0-20140410-4.12.0.swc")
 }
 
-// TODO: Package release archive
-
 flexUnit {
     command = this.properties['flash.player']
 }
@@ -75,16 +73,24 @@ asdoc {
     ]
 }
 
-clean {
-    doLast {
-        println "cleaning up ..."
+task release (dependsOn: ['clean', 'build'], type: Zip) {
+    destinationDir new File(projectDir, 'release')
+    archiveName "${this.properties['product.name']}-${this.properties['product.version']}_" + new Date().format('yyyyMMddHHmm') + ".zip"
+    from('build') {
+        include "${project.name}.swc"
+        into 'bin'
     }
+    from('doc') {
+        include '**/*'
+        exclude 'tempdita'
+        into 'doc'
 }
-
-task release (dependsOn: build) {
-    doLast {
-        println "tag and create release archive"
-        clean.execute()
+    from 'CHANGELOG.md'
+    from 'CONTRIBUTING.md'
+    from 'LICENSE.md'
+    from 'README.md'
+    rename { String fileName ->
+        fileName.replace('.md', '.txt').toLowerCase()
     }
 }
 
