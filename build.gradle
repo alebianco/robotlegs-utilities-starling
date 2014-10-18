@@ -51,6 +51,17 @@ dependencies {
     merged files("libs/robotlegs-framework-v2.2.1.swc",
                  "libs/starling-v1.5.1.swc",
                  "libs/feathers-v2.0.0.swc")
+
+    test files("libs/flexUnitTasks-4.2.0-20140410.jar",
+               "libs/flexunit-4.2.0-20140410-flex_4.12.0.swc",
+               "libs/flexunit-uilistener-4.2.0-20140410-4.12.0.swc",
+               "libs/flexunit-cilistener-4.2.0-20140410-4.12.0.swc")
+}
+
+// TODO: Package release archive
+
+flexUnit {
+    command = this.properties['flash.player']
 }
 
 asdoc {
