@@ -12,9 +12,11 @@ buildscript {
     repositories {
         mavenCentral()
         mavenLocal()
+        maven { url 'http://dl.bintray.com/content/aalmiray/kordamp' }
     }
     dependencies {
         classpath group: 'org.gradlefx', name: 'gradlefx', version: '1.0'
+        classpath group: 'org.kordamp', name: 'markdown-gradle-plugin', version: '0.1.1'
     }
 
     defaultTasks 'build'
@@ -36,6 +38,7 @@ buildscript {
     }
 }
 
+apply plugin: 'org.kordamp.gradle.markdown'
 apply plugin: org.gradlefx.plugins.GradleFxPlugin
 
 type = 'swc'
@@ -79,6 +82,10 @@ asdoc {
     ]
 }
 
+clean {
+    delete += fileTree('release')
+}
+
 task release (dependsOn: ['clean', 'build'], type: Zip) {
     destinationDir new File(projectDir, 'release')
     archiveName "${this.properties['product.name']}-${this.properties['product.version']}_" + new Date().format('yyyyMMddHHmm') + ".zip"
@@ -86,18 +93,37 @@ task release (dependsOn: ['clean', 'build'], type: Zip) {
         include "${project.name}.swc"
         into 'bin'
     }
+    from('build/gen-html') {
+        include "*.html"
+        rename { String fileName -> fileName.toLowerCase() }
+    }
     from('doc') {
         include '**/*'
         exclude 'tempdita'
         into 'doc'
     }
-    from 'CHANGELOG.md'
-    from 'CONTRIBUTING.md'
-    from 'LICENSE.md'
-    from 'README.md'
-    rename { String fileName ->
-        fileName.replace('.md', '.txt').toLowerCase()
+
+    doFirst {
+        copy {
+            from projectDir
+            into "$buildDir/markdown"
+            include "*.md"
+        }
+        markdownToHtml.execute()
     }
+}
+
+markdownToHtml {
+    sourceDir = new File("$buildDir/markdown")
+    configuration = [
+            fencedCodeBlocks: true,
+            smart : true,
+            definitionLists : true,
+            abbreviations: true,
+            autoLinks: true,
+            hardwraps: true,
+            tables: true
+    ]
 }
 
 build.shouldRunAfter clean
