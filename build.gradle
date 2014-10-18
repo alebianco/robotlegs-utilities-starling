@@ -14,7 +14,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath group: 'org.gradlefx', name: 'gradlefx', version: '0.8.3'
+        classpath group: 'org.gradlefx', name: 'gradlefx', version: '1.0'
     }
 
     defaultTasks 'build'
@@ -71,5 +71,5 @@ task release (dependsOn: build) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+    gradleVersion = '2.1'
 }
