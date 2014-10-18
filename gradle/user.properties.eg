@@ -1,0 +1,5 @@
+# Mac
+#sdk.flex.home = /Applications/ApacheFlex/sdks/4.13.0
+
+# Windows
+sdk.flex.home = C:/Program Files (x86)/Apache Flex/sdks/4.13.0

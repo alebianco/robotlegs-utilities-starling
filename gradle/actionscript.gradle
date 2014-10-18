@@ -1,0 +1,41 @@
+/*
+ * Project: robotlegs-extension-starling
+ *
+ * Author:  Alessandro Bianco
+ * Website: http://alessandrobianco.eu
+ * Twitter: @alebianco
+ * Created: 18/10/2014 14.54
+ */
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath group: 'org.gradlefx', name: 'gradlefx', version: '0.8.3'
+    }
+}
+
+apply plugin: org.gradlefx.plugins.GradleFxPlugin
+
+evaluationDependsOnChildren()
+
+type = 'swc'
+srcDirs = ['src']
+
+flexHome = this.properties['sdk.flex.home']
+
+additionalCompilerOptions = [
+        '-swf-version=24',
+        '-target-player=15.0',
+        '-verbose-stacktraces=true',
+        '-load-config=air-config.xml',
+        '-static-link-runtime-shared-libraries=true',
+        "-define=PRODUCT::name,'${this.properties['product.name']}'",
+        "-define=PRODUCT::version,'${this.properties['product.version']}'",
+]
+
+dependencies {
+    merged fileTree(dir: '../libs', include: '*.swc')
+}

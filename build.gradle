@@ -1,0 +1,75 @@
+/*
+ * Project: robotlegs-extension-starling
+ *
+ * Author:  Alessandro Bianco
+ * Website: http://alessandrobianco.eu
+ * Twitter: @alebianco
+ * Created: 18/10/2014 14.54
+ */
+
+buildscript {
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath group: 'org.gradlefx', name: 'gradlefx', version: '0.8.3'
+    }
+
+    defaultTasks 'build'
+
+    files('gradle/user.properties', 'gradle/template.properties').each {
+        File file -> file.withInputStream { stream ->
+            Properties props = new Properties()
+            props.load(stream)
+            props.each { key, value -> project.properties.ext.setProperty(key, value) }
+        }
+    }
+
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (!taskGraph.hasTask(release)) {
+            this.properties.ext['product.version'] += '-SNAPSHOT'
+        }
+    }
+}
+
+
+apply plugin: org.gradlefx.plugins.GradleFxPlugin
+
+type = 'swc'
+srcDirs = ['src']
+buildDir = 'bin'
+
+flexHome = this.properties['sdk.flex.home']
+
+additionalCompilerOptions = [
+        '-swf-version=26',
+        '-target-player=15.0',
+        '-verbose-stacktraces=true',
+        '-load-config=air-config.xml',
+        '-static-link-runtime-shared-libraries=true',
+        "-define=PRODUCT::name,'${this.properties['product.name']}'",
+        "-define=PRODUCT::version,'${this.properties['product.version']}'",
+]
+
+dependencies {
+    merged fileTree(dir: 'libs', include: '*.swc')
+}
+
+clean {
+    doLast {
+        println "cleaning up ..."
+    }
+}
+
+task release (dependsOn: build) {
+    doLast {
+        println "tag and create release archive"
+        clean.execute()
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
