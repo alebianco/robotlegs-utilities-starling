@@ -94,6 +94,8 @@ task release (dependsOn: ['clean', 'build'], type: Zip) {
     }
 }
 
+build.shouldRunAfter clean
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.1'
 }
