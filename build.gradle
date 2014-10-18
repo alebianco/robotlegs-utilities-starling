@@ -20,7 +20,7 @@ buildscript {
         classpath group: 'org.kordamp', name: 'markdown-gradle-plugin', version: '0.1.1'
     }
 
-    defaultTasks 'build'
+    defaultTasks 'build', 'uploadArchives'
 
     fileTree(dir: 'gradle', include: '*.properties').each {
         File file -> file.withInputStream { stream ->
@@ -132,6 +132,19 @@ task release (dependsOn: ['clean', 'build'], type: Zip) {
             include "*.md"
         }
         markdownToHtml.execute()
+    }
+}
+
+group = this.properties['product.group']
+version = this.properties['product.version']
+
+artifacts {
+    archives file: file("${buildDir}/${project.name}.swc"),  name: project.name
+}
+
+uploadArchives {
+    repositories {
+        mavenLocal()
     }
 }
 
