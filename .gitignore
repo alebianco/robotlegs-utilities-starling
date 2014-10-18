@@ -1,6 +1,7 @@
 .gradle
 /doc
 /build
+/release
 
 .actionScriptProperties
 .flexProperties
