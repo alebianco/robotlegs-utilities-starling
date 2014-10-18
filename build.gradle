@@ -14,6 +14,7 @@ buildscript {
         mavenLocal()
         maven { url 'http://dl.bintray.com/content/aalmiray/kordamp' }
     }
+
     dependencies {
         classpath group: 'org.gradlefx', name: 'gradlefx', version: '1.0'
         classpath group: 'org.kordamp', name: 'markdown-gradle-plugin', version: '0.1.1'
@@ -21,13 +22,15 @@ buildscript {
 
     defaultTasks 'build'
 
-    files('gradle/user.properties', 'gradle/template.properties').each {
+    fileTree(dir: 'gradle', include: '*.properties').each {
         File file -> file.withInputStream { stream ->
             Properties props = new Properties()
             props.load(stream)
             props.each { key, value -> project.properties.ext.setProperty(key, value) }
         }
     }
+
+    project.properties.ext.setProperty('os_family', System.properties['os.name'].toLowerCase()[0..2])
 
     allprojects {
         gradle.taskGraph.whenReady { taskGraph ->
@@ -38,8 +41,9 @@ buildscript {
     }
 }
 
-apply plugin: 'org.kordamp.gradle.markdown'
-apply plugin: org.gradlefx.plugins.GradleFxPlugin
+apply plugin: 'gradlefx'
+apply plugin: 'markdown'
+apply plugin: 'maven'
 
 type = 'swc'
 fatSwc = true
@@ -76,28 +80,29 @@ asdoc {
             '-strict=false',
             '-lenient=false',
             '-left-frameset-width=320',
-            "-window-title='${this.properties['product.name']} ${this.properties['product.version']}'",
-            "-main-title='${this.properties['product.name']} ${this.properties['product.version']}'",
-            "-footer='${this.properties['product.name']} - '${this.properties['repository.url']}'"
+            "-window-title=${this.properties['product.title']} ${this.properties['product.version']}",
+            "-main-title=${this.properties['product.title']} ${this.properties['product.version']}",
+            "-footer=${this.properties['product.name']} - '${this.properties['repository.url']}"
     ]
 }
 
 clean {
-    delete += fileTree('release')
+    delete += files('release', 'doc')
 }
 
 task release (dependsOn: ['clean', 'build'], type: Zip) {
+    def touch = new Date().format('yyyyMMddHHmm')
     destinationDir new File(projectDir, 'release')
-    archiveName "${this.properties['product.name']}-${this.properties['product.version']}_" + new Date().format('yyyyMMddHHmm') + ".zip"
-    from('build') {
+    archiveName "${this.properties['product.name']}-${this.properties['product.version']}_${touch}.zip"
+    from(buildDir) {
         include "${project.name}.swc"
         into 'bin'
     }
-    from('build/gen-html') {
+    from("${buildDir}/gen-html") {
         include "*.html"
         rename { String fileName -> fileName.toLowerCase() }
     }
-    from('doc') {
+    from(asdoc.outputDir) {
         include '**/*'
         exclude 'tempdita'
         into 'doc'
