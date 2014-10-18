@@ -30,13 +30,10 @@ buildscript {
     project.properties.ext['product.version'] += '-SNAPSHOT'
 }
 
-
 apply plugin: org.gradlefx.plugins.GradleFxPlugin
 
 type = 'swc'
 fatSwc = true
-srcDirs = ['src']
-buildDir = 'bin'
 
 flexHome = this.properties['sdk.flex.home']
 
@@ -51,11 +48,12 @@ additionalCompilerOptions = [
 ]
 
 dependencies {
-    merged fileTree(dir: 'libs', include: '*.swc')
+    merged files("libs/robotlegs-framework-v2.2.1.swc",
+                 "libs/starling-v1.5.1.swc",
+                 "libs/feathers-v2.0.0.swc")
 }
 
 asdoc {
-    outputDir 'docs'
     additionalASDocOptions = [
             '-strict=false',
             '-lenient=false',
