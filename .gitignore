@@ -1,6 +1,6 @@
 .gradle
-/docs/*
-/bin/*
+/doc
+/build
 
 .actionScriptProperties
 .flexProperties
@@ -17,3 +17,4 @@ Thumbs.db
 
 .idea
 *.iml
+/out
