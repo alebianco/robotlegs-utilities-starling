@@ -1,5 +1,11 @@
 ## HEAD
 
+### 0.9.4 (October 18, 2013)
+
+* Updated to Robotlegs v2.2.1
+* Updated to Starling v1.5.1
+* Updated to Feathers v2.0.0
+
 ### 0.9.3 (September 14, 2013)
 
 * Updated to Robotlegs v2.1.0
