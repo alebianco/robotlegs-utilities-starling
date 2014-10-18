@@ -2,6 +2,7 @@
 
 ### 0.9.4 (October 18, 2013)
 
+* Moved to a Gradle powered build system
 * Updated to Robotlegs v2.2.1
 * Updated to Starling v1.5.1
 * Updated to Feathers v2.0.0

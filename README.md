@@ -8,6 +8,10 @@ This extension provides a bundle of plugins for Robotlegs that are aimed at mimi
 
 Automatic mediator mapping is not something you will want to use extensively on your games, especially if you're focusign on getting the beste possible performances out of it, but it's incredibly useful for kickstarting the game and handle all the UI operations. It also makes it easier to convert your Flex-based rich application into an incredibly fast performancing app thanks to Feathers.
 
+# Releases
+
+You'll find new versions of the extension in the [Releases page](https://github.com/alebianco/robotlegs-utilities-starling/releases) of the repository.
+
 ## Usage
 
 From your main class, when you initialize Starling, create a Robotlegs Context and install the StarlingBundle and the ViewProcessMapExtension.
@@ -74,7 +78,7 @@ As I said, processing every instance added or remove from the screen could becom
 
 In the **build** folder, make a copy of the _user.properties.eg_ file and call it _user.properties_  
 Edit that file to provide values specific to your system  
-Use the `build.xml` ant script you'll find in the **build** folder, to build the project
+Use the `gradlew` script to build the project
 
 ## Contributing
 
