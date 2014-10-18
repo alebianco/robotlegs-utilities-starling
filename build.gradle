@@ -27,17 +27,14 @@ buildscript {
         }
     }
 
-    gradle.taskGraph.whenReady { taskGraph ->
-        if (!taskGraph.hasTask(release)) {
-            this.properties.ext['product.version'] += '-SNAPSHOT'
-        }
-    }
+    project.properties.ext['product.version'] += '-SNAPSHOT'
 }
 
 
 apply plugin: org.gradlefx.plugins.GradleFxPlugin
 
 type = 'swc'
+fatSwc = true
 srcDirs = ['src']
 buildDir = 'bin'
 
@@ -55,6 +52,18 @@ additionalCompilerOptions = [
 
 dependencies {
     merged fileTree(dir: 'libs', include: '*.swc')
+}
+
+asdoc {
+    outputDir 'docs'
+    additionalASDocOptions = [
+            '-strict=false',
+            '-lenient=false',
+            '-left-frameset-width=320',
+            "-window-title='${this.properties['product.name']} ${this.properties['product.version']}'",
+            "-main-title='${this.properties['product.name']} ${this.properties['product.version']}'",
+            "-footer='${this.properties['product.name']} - '${this.properties['repository.url']}'"
+    ]
 }
 
 clean {
