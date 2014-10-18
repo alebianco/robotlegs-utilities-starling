@@ -48,8 +48,6 @@ apply plugin: 'maven'
 type = 'swc'
 fatSwc = true
 
-flexHome = this.properties['sdk.flex.home']
-
 additionalCompilerOptions = [
         '-swf-version=26',
         '-target-player=15.0',
@@ -60,7 +58,22 @@ additionalCompilerOptions = [
         "-define=PRODUCT::version,'${this.properties['product.version']}'",
 ]
 
+repositories {
+    ivy {
+        name 'Apache'
+        artifactPattern 'http://apache.cu.be/flex/[revision]/binaries/[module]-[revision]-bin.[ext]'
+    }
+
+    ivy {
+        name 'Adobe Air SDK'
+        artifactPattern 'http://download.macromedia.com/air/win/download/[revision]/[module].[ext]'
+    }
+}
+
 dependencies {
+    flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.13.0', ext: 'tar.gz'
+    airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '15.0', ext: 'zip'
+
     merged files("libs/robotlegs-framework-v2.2.1.swc",
                  "libs/starling-v1.5.1.swc",
                  "libs/feathers-v2.0.0.swc")
@@ -71,8 +84,12 @@ dependencies {
                "libs/flexunit-cilistener-4.2.0-20140410-4.12.0.swc")
 }
 
+sdkAutoInstall {
+    showPrompts	= false
+}
+
 flexUnit {
-    command = this.properties['flash.player']
+    command = System.getenv('FLASH_PLAYER_EXE') ?: this.properties["${os_family}.flash.player"]
 }
 
 asdoc {

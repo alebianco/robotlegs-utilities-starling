@@ -1,7 +1,2 @@
-# Mac
-#sdk.flex.home = /Applications/ApacheFlex/sdks/4.13.0
-#flash.player = /Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger
-
-# Windows
-sdk.flex.home = C:/Program Files (x86)/Apache Flex/sdks/4.13.0
-flash.player = C:/Program Files (x86)/Apache Flex/sdks/4.13.0/runtimes/player/15.0/win/FlashPlayerDebugger.exe
+mac.flash.player = /Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger
+win.flash.player = C:/Program Files (x86)/Apache Flex/player/win/15.0.0.152/flashplayer_15_sa_debug.exe
