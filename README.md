@@ -1,5 +1,7 @@
 # RoboStarlegs: Starling integration for Robotlegs2
 
+[![Build Status](https://travis-ci.org/alebianco/robotlegs-utilities-starling.svg?branch=master)](https://travis-ci.org/alebianco/robotlegs-utilities-starling)
+
 RoboStarlegs allows you to use [Robotlegs](http://www.robotlegs.org/) with [Starling](http://gamua.com/starling/) and any other library based on that, like [Feathers](http://feathersui.com/), in the same fashion you'd use it with the regular Flash display list or Flex.
 
 ## Introduction

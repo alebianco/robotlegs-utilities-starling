@@ -1,0 +1,29 @@
+#
+# Project: robotlegs-extension-starling
+#
+# Author:  Alessandro Bianco
+# Website: http://alessandrobianco.eu
+# Twitter: @alebianco
+# Created: 18/10/2014 23.12
+#
+
+language: objective-c
+
+git:
+  depth: 1
+
+env:
+  - TERM=dumb
+
+before_install:
+  - brew update >brew-update.log
+  - chmod +x gradlew
+
+install:
+  - brew install caskroom/cask/brew-cask
+  - brew cask install flash-player-debugger
+
+before_script:
+  - export FLASH_PLAYER_EXE="$HOME/Applications/Flash Player Debugger.app/Contents/MacOS/Flash Player Debugger"
+
+script: ./gradlew release
