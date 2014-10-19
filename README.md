@@ -1,4 +1,4 @@
-# RoboStarlegs: Starling integration for Robotlegs2
+# RoboStarlegs
 
 [![Build Status](https://travis-ci.org/alebianco/robotlegs-utilities-starling.svg?branch=master)](https://travis-ci.org/alebianco/robotlegs-utilities-starling)
 
@@ -78,10 +78,10 @@ As I said, processing every instance added or remove from the screen could becom
 
 ## Building
 
-In the **build** folder, make a copy of the _user.properties.eg_ file and call it _user.properties_  
+In the **gradle** folder, make a copy of the _user.properties.eg_ file and call it _user.properties_
 Edit that file to provide values specific to your system  
 Use the `gradlew` script to build the project
 
 ## Contributing
 
-If you want to contribute to the project refer to the [CONTRIBUTING.md](CONTRIBUTING.md) document for guidelines.
+If you want to contribute to the project refer to the [contributing document](CONTRIBUTING.md) for guidelines.
