@@ -18,7 +18,7 @@ env:
 deploy:
   provider: releases
   api-key:
-    secure: "LbLl2rDK424dvV9nVXWeHpN+3b8gkehZsZVKaB4F3CwvRadCs8mGJdrre2nULXaac1eyMVBGqs89REER3BmexIkBcuGAwealFigICl61S1eYfwQ/aI3cgoIH+RekmhJLZqlJoOOARIJB8QlA+RnjXvRLs3im1kFzx9z6JOGK3+s="
+    secure: "F0pZuD0SJ788O0HhLw/h6hq+UF6vi1oVhUoZ2w6My29NGtm+vMERqpj0nFfwuXJ586+xoj+RxmCaG7giMsmdh73VGY0733uHoth6TaR9cqnitOqKDwnD88YLLIZ9tWRIUnjID/RPXia+crYL0sc2JzY/sVD8/mOoZIfslfexMKs="
   file: "release/*.zip"
   file_glob: true
   skip_cleanup: true
