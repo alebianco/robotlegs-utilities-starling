@@ -1,17 +1,45 @@
-package robotlegs.starling.extensions.contextView {
+//------------------------------------------------------------------------------
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
 
-import starling.core.Starling;
+package robotlegs.starling.extensions.contextView
+{
+	import starling.display.DisplayObjectContainer;
 
-public class ContextView {
+	/**
+	 * The Context View represents the root DisplayObjectContainer for a Context
+	 */
+	public class ContextView
+	{
 
-    private var _view:Starling;
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
 
-    public function get view():Starling {
-        return _view;
-    }
+		private var _view:DisplayObjectContainer;
 
-    public function ContextView(view:Starling) {
-        _view = view;
-    }
-}
+		/**
+		 * The root DisplayObjectContainer for this Context
+		 */
+		public function get view():DisplayObjectContainer
+		{
+			return _view;
+		}
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		/**
+		 * The Context View represents the root DisplayObjectContainer for a Context
+		 * @param view The root DisplayObjectContainer for this Context
+		 */
+		public function ContextView(view:DisplayObjectContainer)
+		{
+			_view = view;
+		}
+	}
 }

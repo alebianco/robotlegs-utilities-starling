@@ -1,18 +1,45 @@
-package robotlegs.starling.extensions.contextView {
+//------------------------------------------------------------------------------
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
 
-import robotlegs.starling.extensions.viewManager.api.IViewManager;
+package robotlegs.starling.extensions.contextView
+{
+	import robotlegs.starling.extensions.viewManager.api.IViewManager;
+	import robotlegs.bender.framework.api.IConfig;
 
-public class ContextViewListenerConfig {
+	/**
+	 * This configuration file adds the ContextView to the viewManager.
+	 *
+	 * It requires that the ViewManagerExtension, ContextViewExtension
+	 * and a ContextView have been installed.
+	 */
+	public class ContextViewListenerConfig implements IConfig
+	{
 
-    [Inject]
-    public var contextView:ContextView;
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
 
-    [Inject]
-    public var viewManager:IViewManager;
+		[Inject]
+		public var contextView:ContextView;
 
-    [PostConstruct]
-    public function init():void {
-        viewManager.addContainer(contextView.view.stage);
-    }
-}
+		[Inject]
+		public var viewManager:IViewManager;
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		/**
+		 * @inheritDoc
+		 */
+		public function configure():void
+		{
+			// Adds the Context View to the View Manager at startup
+			viewManager.addContainer(contextView.view.stage);
+		}
+	}
 }
