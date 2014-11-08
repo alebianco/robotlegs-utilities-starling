@@ -1,112 +1,132 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.mediatorMap.impl {
-import flash.utils.Dictionary;
+package robotlegs.starling.extensions.mediatorMap.impl
+{
+	import starling.display.DisplayObject;
+	import flash.utils.Dictionary;
+	import robotlegs.bender.extensions.matching.ITypeMatcher;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
+	import robotlegs.starling.extensions.mediatorMap.api.IMediatorMap;
+	import robotlegs.starling.extensions.mediatorMap.dsl.IMediatorMapper;
+	import robotlegs.starling.extensions.mediatorMap.dsl.IMediatorUnmapper;
+	import robotlegs.starling.extensions.viewManager.api.IViewHandler;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.ILogger;
 
-import robotlegs.bender.extensions.matching.ITypeMatcher;
-import robotlegs.bender.extensions.matching.TypeMatcher;
-import robotlegs.starling.extensions.mediatorMap.api.IMediatorFactory;
-import robotlegs.starling.extensions.mediatorMap.api.IMediatorMap;
-import robotlegs.starling.extensions.mediatorMap.api.IMediatorViewHandler;
-import robotlegs.starling.extensions.mediatorMap.dsl.IMediatorMapper;
-import robotlegs.starling.extensions.mediatorMap.dsl.IMediatorUnmapper;
-import robotlegs.starling.extensions.viewManager.api.IViewHandler;
+	/**
+	 * @private
+	 */
+	public class MediatorMap implements IMediatorMap, IViewHandler
+	{
 
-import starling.display.DisplayObject;
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
-/**
- * @private
- */
-public class MediatorMap implements IMediatorMap, IViewHandler {
+		private const _mappers:Dictionary = new Dictionary();
 
-    /*============================================================================*/
-    /* Private Properties                                                         */
-    /*============================================================================*/
+		private var _logger:ILogger;
 
-    private const _mappers:Dictionary = new Dictionary();
+		private var _factory:MediatorFactory;
 
-    private var _handler:IMediatorViewHandler;
+		private var _viewHandler:MediatorViewHandler;
 
-    private var _factory:IMediatorFactory;
+		private const NULL_UNMAPPER:IMediatorUnmapper = new NullMediatorUnmapper();
 
-    private const NULL_UNMAPPER:IMediatorUnmapper = new NullMediatorUnmapper();
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Constructor                                                                */
-    /*============================================================================*/
+		/**
+		 * @private
+		 */
+		public function MediatorMap(context:IContext)
+		{
+			_logger = context.getLogger(this);
+			_factory = new MediatorFactory(context.injector);
+			_viewHandler = new MediatorViewHandler(_factory);
+		}
 
-    /**
-     * @private
-     */
-    public function MediatorMap(factory:IMediatorFactory, handler:IMediatorViewHandler = null) {
-        _factory = factory;
-        _handler = handler || new MediatorViewHandler(_factory);
-    }
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Public Functions                                                           */
-    /*============================================================================*/
+		/**
+		 * @inheritDoc
+		 */
+		public function mapMatcher(matcher:ITypeMatcher):IMediatorMapper
+		{
+			return _mappers[matcher.createTypeFilter().descriptor] ||= createMapper(matcher);
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function mapMatcher(matcher:ITypeMatcher):IMediatorMapper {
-        return _mappers[matcher.createTypeFilter().descriptor] ||= createMapper(matcher);
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function map(type:Class):IMediatorMapper
+		{
+			return mapMatcher(new TypeMatcher().allOf(type));
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function map(type:Class):IMediatorMapper {
-        return mapMatcher(new TypeMatcher().allOf(type));
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function unmapMatcher(matcher:ITypeMatcher):IMediatorUnmapper
+		{
+			return _mappers[matcher.createTypeFilter().descriptor] || NULL_UNMAPPER;
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function unmapMatcher(matcher:ITypeMatcher):IMediatorUnmapper {
-        return _mappers[matcher.createTypeFilter().descriptor] || NULL_UNMAPPER;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function unmap(type:Class):IMediatorUnmapper
+		{
+			return unmapMatcher(new TypeMatcher().allOf(type));
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function unmap(type:Class):IMediatorUnmapper {
-        return unmapMatcher(new TypeMatcher().allOf(type));
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function handleView(view:DisplayObject, type:Class):void
+		{
+			_viewHandler.handleView(view, type);
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function handleView(view:DisplayObject, type:Class):void {
-        _handler.handleView(view, type);
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function mediate(item:Object):void
+		{
+			_viewHandler.handleItem(item, item['constructor'] as Class);
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function mediate(item:Object):void {
-        _handler.handleItem(item, item.constructor as Class);
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function unmediate(item:Object):void
+		{
+			_factory.removeMediators(item);
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function unmediate(item:Object):void {
-        _factory.removeMediators(item);
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function unmediateAll():void
+		{
+			_factory.removeAllMediators();
+		}
 
-    /*============================================================================*/
-    /* Private Functions                                                          */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
-    private function createMapper(matcher:ITypeMatcher):IMediatorMapper {
-        return new MediatorMapper(matcher.createTypeFilter(), _handler);
-    }
-}
+		private function createMapper(matcher:ITypeMatcher):IMediatorMapper
+		{
+			return new MediatorMapper(matcher.createTypeFilter(), _viewHandler, _logger);
+		}
+	}
 }

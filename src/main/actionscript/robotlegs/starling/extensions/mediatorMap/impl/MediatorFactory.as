@@ -1,169 +1,170 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.mediatorMap.impl {
-import flash.utils.Dictionary;
+package robotlegs.starling.extensions.mediatorMap.impl
+{
+	import flash.utils.Dictionary;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.starling.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.framework.impl.guardsApprove;
 
-import robotlegs.bender.extensions.matching.ITypeFilter;
-import robotlegs.bender.framework.api.IInjector;
-import robotlegs.bender.framework.impl.applyHooks;
-import robotlegs.bender.framework.impl.guardsApprove;
-import robotlegs.starling.extensions.mediatorMap.api.IMediatorFactory;
-import robotlegs.starling.extensions.mediatorMap.api.IMediatorMapping;
-import robotlegs.starling.extensions.mediatorMap.api.MediatorFactoryEvent;
+	/**
+	 * @private
+	 */
+	public class MediatorFactory
+	{
 
-import starling.events.EventDispatcher;
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
-[Event(name="mediatorCreate", type="robotlegs.starling.extensions.mediatorMap.api.MediatorFactoryEvent")]
-[Event(name="mediatorRemove", type="robotlegs.starling.extensions.mediatorMap.api.MediatorFactoryEvent")]
-/**
- * @private
- */
-public class MediatorFactory extends EventDispatcher implements IMediatorFactory {
+		private const _mediators:Dictionary = new Dictionary();
 
-    /*============================================================================*/
-    /* Private Properties                                                         */
-    /*============================================================================*/
+		private var _injector:IInjector;
 
-    private const _mediators:Dictionary = new Dictionary();
+		private var _manager:MediatorManager;
 
-    private var _injector:IInjector;
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Constructor                                                                */
-    /*============================================================================*/
+		/**
+		 * @private
+		 */
+		public function MediatorFactory(injector:IInjector, manager:MediatorManager = null)
+		{
+			_injector = injector;
+			_manager = manager || new MediatorManager(this);
+		}
 
-    /**
-     * @private
-     */
-    public function MediatorFactory(injector:IInjector) {
-        _injector = injector;
-    }
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Public Functions                                                           */
-    /*============================================================================*/
+		/**
+		 * @private
+		 */
+		public function getMediator(item:Object, mapping:IMediatorMapping):Object
+		{
+			return _mediators[item] ? _mediators[item][mapping] : null;
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function getMediator(item:Object, mapping:IMediatorMapping):Object {
-        return _mediators[item] ? _mediators[item][mapping] : null;
-    }
+		/**
+		 * @private
+		 */
+		public function createMediators(item:Object, type:Class, mappings:Array):Array
+		{
+			const createdMediators:Array = [];
+			var mediator:Object;
+			for each (var mapping:IMediatorMapping in mappings)
+			{
+				mediator = getMediator(item, mapping);
 
-    /**
-     * @inheritDoc
-     */
-    public function createMediators(item:Object, type:Class, mappings:Array):Array {
-        const createdMediators:Array = [];
-        var filter:ITypeFilter;
-        var mediator:Object;
-        for each (var mapping:IMediatorMapping in mappings) {
-            mediator = getMediator(item, mapping);
+				if (!mediator)
+				{
+					mapTypeForFilterBinding(mapping.matcher, type, item);
+					mediator = createMediator(item, mapping);
+					unmapTypeForFilterBinding(mapping.matcher, type, item)
+				}
 
-            if (!mediator) {
-                filter = mapping.matcher;
-                mapTypeForFilterBinding(filter, type, item);
-                mediator = createMediator(item, mapping);
-                unmapTypeForFilterBinding(filter, type, item)
-            }
+				if (mediator)
+					createdMediators.push(mediator);
+			}
+			return createdMediators;
+		}
 
-            if (mediator)
-                createdMediators.push(mediator);
-        }
-        return createdMediators;
-    }
+		/**
+		 * @private
+		 */
+		public function removeMediators(item:Object):void
+		{
+			const mediators:Dictionary = _mediators[item];
+			if (!mediators)
+				return;
 
-    /**
-     * @inheritDoc
-     */
-    public function removeMediators(item:Object):void {
-        const mediators:Dictionary = _mediators[item];
-        if (!mediators)
-            return;
+			for (var mapping:Object in mediators)
+			{
+				_manager.removeMediator(mediators[mapping], item, mapping as IMediatorMapping);
+			}
 
-        if (hasEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE)) {
-            for (var mapping:Object in mediators) {
-                dispatchEvent(new MediatorFactoryEvent(
-                        MediatorFactoryEvent.MEDIATOR_REMOVE,
-                        mediators[mapping], item, mapping as IMediatorMapping, this));
-            }
-        }
+			delete _mediators[item];
+		}
 
-        delete _mediators[item];
-    }
+		/**
+		 * @private
+		 */
+		public function removeAllMediators():void
+		{
+			for (var item:Object in _mediators)
+			{
+				removeMediators(item);
+			}
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function removeAllMediators():void {
-        for (var item:Object in _mediators) {
-            removeMediators(item);
-        }
-    }
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Private Functions                                                          */
-    /*============================================================================*/
+		private function createMediator(item:Object, mapping:IMediatorMapping):Object
+		{
+			var mediator:Object = getMediator(item, mapping);
 
-    private function createMediator(item:Object, mapping:IMediatorMapping):Object {
-        var mediator:Object = getMediator(item, mapping);
+			if (mediator)
+				return mediator;
 
-        if (mediator)
-            return mediator;
+			if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
+			{
+				const mediatorClass:Class = mapping.mediatorClass;
+				mediator = _injector.instantiateUnmapped(mediatorClass);
+				if (mapping.hooks.length > 0)
+				{
+					_injector.map(mediatorClass).toValue(mediator);
+					applyHooks(mapping.hooks, _injector);
+					_injector.unmap(mediatorClass);
+				}
+				addMediator(mediator, item, mapping);
+			}
+			return mediator;
+		}
 
-        if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector)) {
-            const mediatorClass:Class = mapping.mediatorClass;
-            mediator = _injector.instantiateUnmapped(mediatorClass);
-            if (mapping.hooks.length > 0) {
-                _injector.map(mediatorClass).toValue(mediator);
-                applyHooks(mapping.hooks, _injector);
-                _injector.unmap(mediatorClass);
-            }
-            addMediator(mediator, item, mapping);
-        }
-        return mediator;
-    }
+		private function addMediator(mediator:Object, item:Object, mapping:IMediatorMapping):void
+		{
+			_mediators[item] ||= new Dictionary();
+			_mediators[item][mapping] = mediator;
+			_manager.addMediator(mediator, item, mapping);
+		}
 
-    private function addMediator(mediator:Object, item:Object, mapping:IMediatorMapping):void {
-        _mediators[item] ||= new Dictionary();
-        _mediators[item][mapping] = mediator;
-        if (hasEventListener(MediatorFactoryEvent.MEDIATOR_CREATE))
-            dispatchEvent(new MediatorFactoryEvent(
-                    MediatorFactoryEvent.MEDIATOR_CREATE,
-                    mediator, item, mapping, this));
-    }
+		private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void
+		{
+			for each (var requiredType:Class in requiredTypesFor(filter, type))
+			{
+				_injector.map(requiredType).toValue(item);
+			}
+		}
 
-    private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void {
-        var requiredType:Class;
-        const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
+		private function unmapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void
+		{
+			for each (var requiredType:Class in requiredTypesFor(filter, type))
+			{
+				if (_injector.satisfiesDirectly(requiredType))
+					_injector.unmap(requiredType);
+			}
+		}
 
-        for each (requiredType in requiredTypes) {
-            _injector.map(requiredType).toValue(item);
-        }
-    }
+		private function requiredTypesFor(filter:ITypeFilter, type:Class):Vector.<Class>
+		{
+			const requiredTypes:Vector.<Class> = filter.allOfTypes.concat(filter.anyOfTypes);
 
-    private function unmapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void {
-        var requiredType:Class;
-        const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
+			if (requiredTypes.indexOf(type) == -1)
+				requiredTypes.push(type);
 
-        for each (requiredType in requiredTypes) {
-            if (_injector.satisfiesDirectly(requiredType))
-                _injector.unmap(requiredType);
-        }
-    }
-
-    private function requiredTypesFor(filter:ITypeFilter, type:Class):Vector.<Class> {
-        const requiredTypes:Vector.<Class> = filter.allOfTypes.concat(filter.anyOfTypes);
-
-        if (requiredTypes.indexOf(type) == -1)
-            requiredTypes.push(type);
-
-        return requiredTypes;
-    }
-}
+			return requiredTypes;
+		}
+	}
 }
