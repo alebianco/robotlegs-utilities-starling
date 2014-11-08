@@ -8,6 +8,7 @@
  */
 package robotlegs.starling.bundles.mvcs {
 
+import robotlegs.bender.extensions.directCommandMap.DirectCommandMapExtension;
 import robotlegs.bender.extensions.enhancedLogging.InjectableLoggerExtension;
 import robotlegs.bender.extensions.enhancedLogging.TraceLoggingExtension;
 import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;
@@ -34,6 +35,7 @@ public class StarlingBundle implements IBundle {
                 ContextViewExtension,
                 EventDispatcherExtension,
                 //ModularityExtension,
+                DirectCommandMapExtension,
                 EventCommandMapExtension,
                 LocalEventMapExtension,
                 ViewManagerExtension,
