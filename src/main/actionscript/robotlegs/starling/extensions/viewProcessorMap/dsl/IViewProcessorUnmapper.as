@@ -5,32 +5,34 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.viewProcessorMap.dsl {
+package robotlegs.starling.extensions.viewProcessorMap.dsl
+{
 
-/**
- * Unmaps a view processor
- */
-public interface IViewProcessorUnmapper {
-    /**
-     * Unmaps a processor from a matcher
-     * @param processorClassOrInstance
-     */
-    function fromProcess(processorClassOrInstance:*):void;
+	/**
+	 * Unmaps a view processor
+	 */
+	public interface IViewProcessorUnmapper
+	{
+		/**
+		 * Unmaps a processor from a matcher
+		 * @param processorClassOrInstance
+		 */
+		function fromProcess(processorClassOrInstance:*):void;
 
-    /**
-     * Unmaps a matcher
-     */
-    function fromNoProcess():void;
+		/**
+		 * Unmaps a matcher
+		 */
+		function fromNoProcess():void;
 
-    /**
-     * Unmaps an injection processor
-     */
-    function fromInjection():void;
+		/**
+		 * Unmaps an injection processor
+		 */
+		function fromInjection():void;
 
-    /**
-     * Unmaps all processors from this matcher
-     */
-    function fromAll():void;
-}
+		/**
+		 * Unmaps all processors from this matcher
+		 */
+		function fromAll():void;
+	}
 
 }

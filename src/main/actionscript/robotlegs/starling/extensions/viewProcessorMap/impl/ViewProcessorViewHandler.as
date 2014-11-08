@@ -5,112 +5,123 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.viewProcessorMap.impl {
-import flash.utils.Dictionary;
+package robotlegs.starling.extensions.viewProcessorMap.impl
+{
+	import flash.utils.Dictionary;
+	import robotlegs.starling.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 
-import robotlegs.starling.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
+	/**
+	 * @private
+	 */
+	public class ViewProcessorViewHandler implements IViewProcessorViewHandler
+	{
 
-/**
- * @private
- */
-public class ViewProcessorViewHandler implements IViewProcessorViewHandler {
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Private Properties                                                         */
-    /*============================================================================*/
+		private const _mappings:Array = [];
 
-    private const _mappings:Array = [];
+		private var _knownMappings:Dictionary = new Dictionary(true);
 
-    private var _knownMappings:Dictionary = new Dictionary(true);
+		private var _factory:IViewProcessorFactory;
 
-    private var _factory:IViewProcessorFactory;
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Constructor                                                                */
-    /*============================================================================*/
+		/**
+		 * @private
+		 */
+		public function ViewProcessorViewHandler(factory:IViewProcessorFactory):void
+		{
+			_factory = factory;
+		}
 
-    /**
-     * @private
-     */
-    public function ViewProcessorViewHandler(factory:IViewProcessorFactory):void {
-        _factory = factory;
-    }
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Public Functions                                                           */
-    /*============================================================================*/
+		/**
+		 * @inheritDoc
+		 */
+		public function addMapping(mapping:IViewProcessorMapping):void
+		{
+			const index:int = _mappings.indexOf(mapping);
+			if (index > -1)
+				return;
+			_mappings.push(mapping);
+			flushCache();
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function addMapping(mapping:IViewProcessorMapping):void {
-        const index:int = _mappings.indexOf(mapping);
-        if (index > -1)
-            return;
-        _mappings.push(mapping);
-        flushCache();
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function removeMapping(mapping:IViewProcessorMapping):void
+		{
+			const index:int = _mappings.indexOf(mapping);
+			if (index == -1)
+				return;
+			_mappings.splice(index, 1);
+			flushCache();
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function removeMapping(mapping:IViewProcessorMapping):void {
-        const index:int = _mappings.indexOf(mapping);
-        if (index == -1)
-            return;
-        _mappings.splice(index, 1);
-        flushCache();
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function processItem(item:Object, type:Class):void
+		{
+			const interestedMappings:Array = getInterestedMappingsFor(item, type);
+			if (interestedMappings)
+				_factory.runProcessors(item, type, interestedMappings);
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function processItem(item:Object, type:Class):void {
-        const interestedMappings:Array = getInterestedMappingsFor(item, type);
-        if (interestedMappings)
-            _factory.runProcessors(item, type, interestedMappings);
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function unprocessItem(item:Object, type:Class):void
+		{
+			const interestedMappings:Array = getInterestedMappingsFor(item, type);
+			if (interestedMappings)
+				_factory.runUnprocessors(item, type, interestedMappings);
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function unprocessItem(item:Object, type:Class):void {
-        const interestedMappings:Array = getInterestedMappingsFor(item, type);
-        if (interestedMappings)
-            _factory.runUnprocessors(item, type, interestedMappings);
-    }
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Private Functions                                                          */
-    /*============================================================================*/
+		private function flushCache():void
+		{
+			_knownMappings = new Dictionary(true);
+		}
 
-    private function flushCache():void {
-        _knownMappings = new Dictionary(true);
-    }
+		private function getInterestedMappingsFor(view:Object, type:Class):Array
+		{
+			var mapping:IViewProcessorMapping;
 
-    private function getInterestedMappingsFor(view:Object, type:Class):Array {
-        var mapping:IViewProcessorMapping;
+			// we've seen this type before and nobody was interested
+			if (_knownMappings[type] === false)
+				return null;
 
-        // we've seen this type before and nobody was interested
-        if (_knownMappings[type] === false)
-            return null;
+			// we haven't seen this type before
+			if (_knownMappings[type] == undefined)
+			{
+				_knownMappings[type] = false;
+				for each (mapping in _mappings)
+				{
+					if (mapping.matcher.matches(view))
+					{
+						_knownMappings[type] ||= [];
+						_knownMappings[type].push(mapping);
+					}
+				}
+				// nobody cares, let's get out of here
+				if (_knownMappings[type] === false)
+					return null;
+			}
 
-        // we haven't seen this type before
-        if (_knownMappings[type] == undefined) {
-            _knownMappings[type] = false;
-            for each (mapping in _mappings) {
-                if (mapping.matcher.matches(view)) {
-                    _knownMappings[type] ||= [];
-                    _knownMappings[type].push(mapping);
-                }
-            }
-            // nobody cares, let's get out of here
-            if (_knownMappings[type] === false)
-                return null;
-        }
-
-        // these mappings really do care
-        return _knownMappings[type] as Array;
-    }
-}
+			// these mappings really do care
+			return _knownMappings[type] as Array;
+		}
+	}
 }

@@ -5,25 +5,27 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.viewProcessorMap.api {
+package robotlegs.starling.extensions.viewProcessorMap.api
+{
 
-/**
- * View Processor Map Error
- */
-public class ViewProcessorMapError extends Error {
+	/**
+	 * View Processor Map Error
+	 */
+	public class ViewProcessorMapError extends Error
+	{
 
-    /*============================================================================*/
-    /* Constructor                                                                */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
-    /**
-     * Creates a View Processor Map Error
-     * @param message The error message
-     */
-    public function ViewProcessorMapError(message:String) {
-        super(message);
-    }
+		/**
+		 * Creates a View Processor Map Error
+		 * @param message The error message
+		 */
+		public function ViewProcessorMapError(message:String)
+		{
+			super(message);
+		}
+	}
+
 }
-
-}
-

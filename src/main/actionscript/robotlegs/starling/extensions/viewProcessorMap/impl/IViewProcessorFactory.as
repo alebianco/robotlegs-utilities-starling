@@ -5,25 +5,27 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.viewProcessorMap.impl {
+package robotlegs.starling.extensions.viewProcessorMap.impl
+{
 
-/**
- * @private
- */
-public interface IViewProcessorFactory {
-    /**
-     * @private
-     */
-    function runProcessors(view:Object, type:Class, processorMappings:Array):void;
+	/**
+	 * @private
+	 */
+	public interface IViewProcessorFactory
+	{
+		/**
+		 * @private
+		 */
+		function runProcessors(view:Object, type:Class, processorMappings:Array):void;
 
-    /**
-     * @private
-     */
-    function runUnprocessors(view:Object, type:Class, processorMappings:Array):void;
+		/**
+		 * @private
+		 */
+		function runUnprocessors(view:Object, type:Class, processorMappings:Array):void;
 
-    /**
-     * @private
-     */
-    function runAllUnprocessors():void;
-}
+		/**
+		 * @private
+		 */
+		function runAllUnprocessors():void;
+	}
 }

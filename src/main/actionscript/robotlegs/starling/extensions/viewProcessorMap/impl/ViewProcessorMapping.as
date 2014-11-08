@@ -5,122 +5,137 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.viewProcessorMap.impl {
-import robotlegs.bender.extensions.matching.ITypeFilter;
-import robotlegs.starling.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
-import robotlegs.starling.extensions.viewProcessorMap.dsl.IViewProcessorMappingConfig;
+package robotlegs.starling.extensions.viewProcessorMap.impl
+{
+	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.starling.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
+	import robotlegs.starling.extensions.viewProcessorMap.dsl.IViewProcessorMappingConfig;
 
-/**
- * @private
- */
-public class ViewProcessorMapping implements IViewProcessorMapping, IViewProcessorMappingConfig {
+	/**
+	 * @private
+	 */
+	public class ViewProcessorMapping implements IViewProcessorMapping, IViewProcessorMappingConfig
+	{
 
-    /*============================================================================*/
-    /* Public Properties                                                          */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
 
-    private var _matcher:ITypeFilter;
+		private var _matcher:ITypeFilter;
 
-    /**
-     * @inheritDoc
-     */
-    public function get matcher():ITypeFilter {
-        return _matcher;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function get matcher():ITypeFilter
+		{
+			return _matcher;
+		}
 
-    private var _processor:Object;
+		private var _processor:Object;
 
-    /**
-     * @inheritDoc
-     */
-    public function get processor():Object {
-        return _processor;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function get processor():Object
+		{
+			return _processor;
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function set processor(value:Object):void {
-        _processor = value;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function set processor(value:Object):void
+		{
+			_processor = value;
+		}
 
-    private var _processorClass:Class;
+		private var _processorClass:Class;
 
-    /**
-     * @inheritDoc
-     */
-    public function get processorClass():Class {
-        return _processorClass;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function get processorClass():Class
+		{
+			return _processorClass;
+		}
 
-    private var _guards:Array = [];
+		private var _guards:Array = [];
 
-    /**
-     * @inheritDoc
-     */
-    public function get guards():Array {
-        return _guards;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function get guards():Array
+		{
+			return _guards;
+		}
 
-    private var _hooks:Array = [];
+		private var _hooks:Array = [];
 
-    /**
-     * @inheritDoc
-     */
-    public function get hooks():Array {
-        return _hooks;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function get hooks():Array
+		{
+			return _hooks;
+		}
 
-    /*============================================================================*/
-    /* Constructor                                                                */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
-    /**
-     * @private
-     */
-    public function ViewProcessorMapping(matcher:ITypeFilter, processor:Object) {
-        _matcher = matcher;
+		/**
+		 * @private
+		 */
+		public function ViewProcessorMapping(matcher:ITypeFilter, processor:Object)
+		{
+			_matcher = matcher;
 
-        setProcessor(processor);
-    }
+			setProcessor(processor);
+		}
 
-    /*============================================================================*/
-    /* Public Functions                                                           */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
-    /**
-     * @inheritDoc
-     */
-    public function withGuards(...guards):IViewProcessorMappingConfig {
-        _guards = _guards.concat.apply(null, guards);
-        return this;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function withGuards(... guards):IViewProcessorMappingConfig
+		{
+			_guards = _guards.concat.apply(null, guards);
+			return this;
+		}
 
-    /**
-     * @inheritDoc
-     */
-    public function withHooks(...hooks):IViewProcessorMappingConfig {
-        _hooks = _hooks.concat.apply(null, hooks);
-        return this;
-    }
+		/**
+		 * @inheritDoc
+		 */
+		public function withHooks(... hooks):IViewProcessorMappingConfig
+		{
+			_hooks = _hooks.concat.apply(null, hooks);
+			return this;
+		}
 
-    public function toString():String {
-        return 'Processor ' + _processor;
-    }
+		public function toString():String
+		{
+			return 'Processor ' + _processor;
+		}
 
-    /*============================================================================*/
-    /* Private Functions                                                          */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
-    private function setProcessor(processor:Object):void {
-        if (processor is Class) {
-            _processorClass = processor as Class;
-        }
-        else {
-            _processor = processor;
-            _processorClass = _processor.constructor;
-        }
-    }
-}
+		private function setProcessor(processor:Object):void
+		{
+			if (processor is Class)
+			{
+				_processorClass = processor as Class;
+			}
+			else
+			{
+				_processor = processor;
+				_processorClass = _processor.constructor;
+			}
+		}
+	}
 
 }

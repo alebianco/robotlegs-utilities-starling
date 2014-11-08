@@ -5,29 +5,32 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.viewProcessorMap.impl {
+package robotlegs.starling.extensions.viewProcessorMap.impl
+{
 
-/**
- * @private
- */
-public class NullProcessor {
+	/**
+	 * @private
+	 */
+	public class NullProcessor
+	{
 
-    /*============================================================================*/
-    /* Public Functions                                                           */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
-    /**
-     * @private
-     */
-    public function process(view:Object, type:Class, injector:*):void {
-    }
+		/**
+		 * @private
+		 */
+		public function process(view:Object, type:Class, injector:*):void
+		{
+		}
 
-    /**
-     * @private
-     */
-    public function unprocess(view:Object, type:Class, injector:*):void {
-    }
+		/**
+		 * @private
+		 */
+		public function unprocess(view:Object, type:Class, injector:*):void
+		{
+		}
+	}
+
 }
-
-}
-
