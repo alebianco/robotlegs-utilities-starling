@@ -16,7 +16,6 @@ import robotlegs.bender.extensions.localEventMap.LocalEventMapExtension;
 import robotlegs.bender.extensions.vigilance.VigilanceExtension;
 import robotlegs.bender.framework.api.IBundle;
 import robotlegs.bender.framework.api.IContext;
-import robotlegs.bender.framework.api.LogLevel;
 import robotlegs.starling.extensions.contextView.ContextViewExtension;
 import robotlegs.starling.extensions.contextView.ContextViewListenerConfig;
 import robotlegs.starling.extensions.contextView.StageSyncExtension;
@@ -28,8 +27,6 @@ import robotlegs.starling.extensions.viewManager.ViewManagerExtension;
 
 public class StarlingBundle implements IBundle {
     public function extend(context:IContext):void {
-        context.logLevel = LogLevel.DEBUG;
-
         context.install(
                 TraceLoggingExtension,
                 VigilanceExtension,
