@@ -1,55 +1,71 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.viewManager.impl {
-import starling.display.DisplayObject;
-import starling.display.DisplayObjectContainer;
+package robotlegs.starling.extensions.viewManager.impl
+{
+	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 
-public class StageCrawler {
+	/**
+	 * @private
+	 */
+	public class StageCrawler
+	{
 
-    /*============================================================================*/
-    /* Private Properties                                                         */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
-    private var _binding:ContainerBinding;
+		private var _binding:ContainerBinding;
 
-    /*============================================================================*/
-    /* Constructor                                                                */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
-    public function StageCrawler(containerBinding:ContainerBinding) {
-        _binding = containerBinding;
-    }
+		/**
+		 * @private
+		 */
+		public function StageCrawler(containerBinding:ContainerBinding)
+		{
+			_binding = containerBinding;
+		}
 
-    /*============================================================================*/
-    /* Public Functions                                                           */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
-    public function scan(view:DisplayObjectContainer):void {
-        scanContainer(view);
-    }
+		/**
+		 * @private
+		 */
+		public function scan(view:DisplayObjectContainer):void
+		{
+			scanContainer(view);
+		}
 
-    /*============================================================================*/
-    /* Private Functions                                                          */
-    /*============================================================================*/
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
-    private function scanContainer(container:DisplayObjectContainer):void {
-        processView(container);
-        const numChildren:int = container.numChildren;
-        for (var i:int = 0; i < numChildren; i++) {
-            const child:DisplayObject = container.getChildAt(i);
-            child is DisplayObjectContainer
-                    ? scanContainer(child as DisplayObjectContainer)
-                    : processView(child);
-        }
-    }
+		private function scanContainer(container:DisplayObjectContainer):void
+		{
+			processView(container);
+			const numChildren:int = container.numChildren;
+			for (var i:int = 0; i < numChildren; i++)
+			{
+				const child:DisplayObject = container.getChildAt(i);
+				child is DisplayObjectContainer
+						? scanContainer(child as DisplayObjectContainer)
+						: processView(child);
+			}
+		}
 
-    private function processView(view:DisplayObject):void {
-        _binding.handleView(view, view['constructor']);
-    }
-}
+		private function processView(view:DisplayObject):void
+		{
+			_binding.handleView(view, view['constructor']);
+		}
+	}
 }

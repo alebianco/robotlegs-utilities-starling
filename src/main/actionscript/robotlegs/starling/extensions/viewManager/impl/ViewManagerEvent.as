@@ -1,64 +1,89 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.starling.extensions.viewManager.impl {
-import robotlegs.starling.extensions.viewManager.api.IViewHandler;
+package robotlegs.starling.extensions.viewManager.impl
+{
+	import starling.display.DisplayObjectContainer;
+	import flash.events.Event;
+	import robotlegs.starling.extensions.viewManager.api.IViewHandler;
 
-import starling.display.DisplayObjectContainer;
-import starling.events.Event;
+	/**
+	 * Container existence event
+	 * @private
+	 */
+	public class ViewManagerEvent extends Event
+	{
 
-/**
- * Container existence event
- * @private
- */
-public class ViewManagerEvent extends Event {
+		/*============================================================================*/
+		/* Public Static Properties                                                   */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Public Static Properties                                                   */
-    /*============================================================================*/
+		public static const CONTAINER_ADD:String = 'containerAdd';
 
-    public static const CONTAINER_ADD:String = 'containerAdd';
+		public static const CONTAINER_REMOVE:String = 'containerRemove';
 
-    public static const CONTAINER_REMOVE:String = 'containerRemove';
+		public static const HANDLER_ADD:String = 'handlerAdd';
 
-    public static const HANDLER_ADD:String = 'handlerAdd';
+		public static const HANDLER_REMOVE:String = 'handlerRemove';
 
-    public static const HANDLER_REMOVE:String = 'handlerRemove';
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
 
-    /*============================================================================*/
-    /* Public Properties                                                          */
-    /*============================================================================*/
+		private var _container:DisplayObjectContainer;
 
-    /**
-     * The container associated with this event
-     */
-    public function get container():DisplayObjectContainer {
-        return data.container as DisplayObjectContainer;
-    }
+		/**
+		 * The container associated with this event
+		 */
+		public function get container():DisplayObjectContainer
+		{
+			return _container;
+		}
 
-    /**
-     * The view handler associated with this event
-     */
-    public function get handler():IViewHandler {
-        return data.handler as IViewHandler;
-    }
+		private var _handler:IViewHandler;
 
-    /*============================================================================*/
-    /* Constructor                                                                */
-    /*============================================================================*/
+		/**
+		 * The view handler associated with this event
+		 */
+		public function get handler():IViewHandler
+		{
+			return _handler;
+		}
 
-    /**
-     * Creates a view manager event
-     * @param type The event type
-     * @param container The container associated with this event
-     * @param handler The view handler associated with this event
-     */
-    public function ViewManagerEvent(type:String, container:DisplayObjectContainer = null, handler:IViewHandler = null) {
-        super(type, false, {container: container, handler: handler});
-    }
-}
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		/**
+		 * Creates a view manager event
+		 * @param type The event type
+		 * @param container The container associated with this event
+		 * @param handler The view handler associated with this event
+		 */
+		public function ViewManagerEvent(
+				type:String,
+				container:DisplayObjectContainer = null,
+				handler:IViewHandler = null)
+		{
+			super(type);
+			_container = container;
+			_handler = handler;
+		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		/**
+		 * @inheritDoc
+		 */
+		override public function clone():Event
+		{
+			return new ViewManagerEvent(type, _container, _handler);
+		}
+	}
 }
