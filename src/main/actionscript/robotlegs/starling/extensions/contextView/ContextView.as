@@ -7,7 +7,7 @@
 
 package robotlegs.starling.extensions.contextView
 {
-	import starling.display.DisplayObjectContainer;
+	import starling.core.Starling;
 
 	/**
 	 * The Context View represents the root DisplayObjectContainer for a Context
@@ -19,12 +19,12 @@ package robotlegs.starling.extensions.contextView
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private var _view:DisplayObjectContainer;
+		private var _view:Starling;
 
 		/**
 		 * The root DisplayObjectContainer for this Context
 		 */
-		public function get view():DisplayObjectContainer
+		public function get view():Starling
 		{
 			return _view;
 		}
@@ -37,7 +37,7 @@ package robotlegs.starling.extensions.contextView
 		 * The Context View represents the root DisplayObjectContainer for a Context
 		 * @param view The root DisplayObjectContainer for this Context
 		 */
-		public function ContextView(view:DisplayObjectContainer)
+		public function ContextView(view:Starling)
 		{
 			_view = view;
 		}

@@ -77,7 +77,7 @@ package robotlegs.starling.extensions.viewManager
 		{
 			_logger.debug("ViewManager is not installed. Checking the ContextView...");
 			const contextView:ContextView = _injector.getInstance(ContextView);
-			contextView.view.stage && scanContainer(contextView.view);
+			contextView.view.stage && scanContainer(contextView.view.stage);
 		}
 
 		private function scanContainer(container:DisplayObjectContainer):void

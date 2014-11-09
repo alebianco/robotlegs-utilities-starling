@@ -7,7 +7,7 @@
 
 package robotlegs.starling.extensions.contextView
 {
-	import starling.display.DisplayObjectContainer;
+	import starling.core.Starling;
 	import starling.events.Event;
 	import robotlegs.bender.extensions.matching.instanceOfType;
 	import robotlegs.bender.framework.api.IContext;
@@ -29,7 +29,7 @@ package robotlegs.starling.extensions.contextView
 
 		private var _context:IContext;
 
-		private var _contextView:DisplayObjectContainer;
+		private var _contextView:Starling;
 
 		private var _logger:ILogger;
 
