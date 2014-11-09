@@ -26,7 +26,7 @@ package robotlegs.starling.extensions.mediatorMap.impl
 
 		private static const feathersAvailable:Boolean = checkFeathers();
 
-		private static const CREATION_COMPLETE:String = "creationComplete";
+		private static const INITIALIZE:String = "initialize";
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -82,9 +82,9 @@ package robotlegs.starling.extensions.mediatorMap.impl
 			}
 			else
 			{
-				displayObject.addEventListener(CREATION_COMPLETE, function(e:Event):void
+				displayObject.addEventListener(INITIALIZE, function(e:Event):void
 				{
-					displayObject.removeEventListener(CREATION_COMPLETE, arguments.callee);
+					displayObject.removeEventListener(INITIALIZE, arguments.callee);
 					// Ensure that we haven't been removed in the meantime
 					if (_factory.getMediator(item, mapping) == mediator)
 						initializeMediator(mediator, item);
@@ -115,7 +115,7 @@ package robotlegs.starling.extensions.mediatorMap.impl
 
 		private function itemInitialized(item:Object):Boolean
 		{
-			if (feathersAvailable && (item is UIComponentClass) && !item['initialized'])
+			if (feathersAvailable && (item is UIComponentClass) && !item['isInitialized'])
 				return false;
 			return true;
 		}

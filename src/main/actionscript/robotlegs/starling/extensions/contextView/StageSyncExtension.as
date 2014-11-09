@@ -61,7 +61,7 @@ package robotlegs.starling.extensions.contextView
 				return;
 			}
 			_contextView = contextView.view;
-			if (_contextView.stage)
+			if (_contextView.root)
 			{
 				initializeContext();
 			}
