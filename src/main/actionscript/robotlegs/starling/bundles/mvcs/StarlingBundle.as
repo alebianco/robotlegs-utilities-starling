@@ -14,6 +14,7 @@ import robotlegs.bender.extensions.enhancedLogging.TraceLoggingExtension;
 import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;
 import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 import robotlegs.bender.extensions.localEventMap.LocalEventMapExtension;
+import robotlegs.bender.extensions.viewProcessorMap.ViewProcessorMapExtension;
 import robotlegs.bender.extensions.vigilance.VigilanceExtension;
 import robotlegs.bender.framework.api.IBundle;
 import robotlegs.bender.framework.api.IContext;
@@ -42,6 +43,7 @@ public class StarlingBundle implements IBundle {
                 StageObserverExtension,
                 ManualStageObserverExtension,
                 MediatorMapExtension,
+                ViewProcessorMapExtension,
                 StageCrawlerExtension,
                 StageSyncExtension);
 
