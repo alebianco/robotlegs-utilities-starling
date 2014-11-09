@@ -21,6 +21,7 @@ import robotlegs.bender.framework.api.IContext;
 import robotlegs.starling.extensions.contextView.ContextViewExtension;
 import robotlegs.starling.extensions.contextView.ContextViewListenerConfig;
 import robotlegs.starling.extensions.contextView.StageSyncExtension;
+import robotlegs.starling.extensions.localEventMap.StarlingEventMapExtension;
 import robotlegs.starling.extensions.mediatorMap.MediatorMapExtension;
 import robotlegs.starling.extensions.viewManager.ManualStageObserverExtension;
 import robotlegs.starling.extensions.viewManager.StageCrawlerExtension;
@@ -39,6 +40,7 @@ public class StarlingBundle implements IBundle {
                 DirectCommandMapExtension,
                 EventCommandMapExtension,
                 LocalEventMapExtension,
+				StarlingEventMapExtension,
                 ViewManagerExtension,
                 StageObserverExtension,
                 ManualStageObserverExtension,
