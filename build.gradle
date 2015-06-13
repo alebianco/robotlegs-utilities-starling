@@ -49,8 +49,8 @@ type = 'swc'
 fatSwc = true
 
 additionalCompilerOptions = [
-        '-swf-version=26',
-        '-target-player=15.0',
+        '-swf-version=29',
+        '-target-player=18.0',
         '-verbose-stacktraces=true',
         '-load-config=air-config.xml',
         '-static-link-runtime-shared-libraries=true',
@@ -71,12 +71,12 @@ repositories {
 }
 
 dependencies {
-    flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.13.0', ext: 'tar.gz'
-    airSDK group: 'com.adobe', name: 'AdobeAIRSDK', version: '15.0', ext: 'zip'
+    flexSDK group: 'org.apache', name: 'apache-flex-sdk', version: '4.14.1', ext: 'tar.gz'
+    airSDK group: 'com.adobe', name: 'AIRSDK_Compiler', version: '18.0', ext: 'tbz2'
 
     merged files("libs/robotlegs-framework-v2.2.1.swc",
-                 "libs/starling-v1.5.1.swc",
-                 "libs/feathers-v2.0.0.swc")
+                 "libs/starling-v1.6.swc",
+                 "libs/feathers-v2.1.1.swc")
 
     test files("libs/flexUnitTasks-4.2.0-20140410.jar",
                "libs/flexunit-4.2.0-20140410-flex_4.12.0.swc",
